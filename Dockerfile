@@ -13,14 +13,18 @@ RUN yarn run build
 FROM ruby:3.0.0-slim-buster
 
 RUN apt-get update && \
-    apt-get install -y -q libpq-dev postgresql-client && \
+    apt-get install -y -q build-essential libpq-dev postgresql-client && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 WORKDIR /app
 
+RUN gem install bundler -v 2.2.3
 COPY Gemfile /app
 COPY Gemfile.lock /app
-RUN bundle install -j$(nproc) --deployment --without 'development test'
+RUN bundle config set deployment 'true' \
+    && bundle config set path '/gems' \
+    && bundle config set without 'development test' \
+    && bundle install -j$(nproc)
 
 COPY . /app
 COPY --from=console /app/public/console /app/public/console
