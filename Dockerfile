@@ -19,6 +19,7 @@ RUN apt-get update && \
 WORKDIR /app
 
 RUN gem install bundler -v 2.2.3
+COPY unicorn.conf.rb /etc/unicorn/unicorn.conf.rb
 COPY Gemfile /app
 COPY Gemfile.lock /app
 RUN bundle config set deployment 'true' \
