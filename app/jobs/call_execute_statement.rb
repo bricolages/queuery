@@ -27,7 +27,7 @@ class CallExecuteStatement < ApplicationJob
     logger.info "[SQL/Redshift] /* #{unload_query.sanitized_note}*/ #{query_stmt}"
 
     config = RedshiftBase::connection_db_config.configuration_hash
-    logger.info "[Redshift Data API] execute statement: #{db_user}"
+    logger.info "[Redshift Data API] execute statement: #{job_id} by #{db_user}"
     api_response = Aws::RedshiftDataAPIService::Client.new.execute_statement({
       cluster_identifier: config[:cluster_identifier],
       database: config[:database],
