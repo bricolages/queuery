@@ -27,14 +27,16 @@ class CallExecuteStatement < ApplicationJob
     logger.info "[SQL/Redshift] /* #{unload_query.sanitized_note}*/ #{query_stmt}"
 
     config = RedshiftBase::connection_db_config.configuration_hash
-    logger.info "[Redshift Data API] execute statement: #{db_user}"
-    Aws::RedshiftDataAPIService::Client.new.execute_statement({
+    logger.info "[Redshift Data API] execute statement: #{job_id} by #{db_user}"
+    api_response = Aws::RedshiftDataAPIService::Client.new.execute_statement({
       cluster_identifier: config[:cluster_identifier],
       database: config[:database],
       db_user: db_user,
       sql: stmt,
       statement_name: "queuery: #{unload_query.sanitized_note}"
     })
+    logger.info "[Redshift Data API] Execute Response: #{api_response}"
+    api_response
   end
 
   class SafeUnloadQuery < RedshiftConnector::UnloadQuery
