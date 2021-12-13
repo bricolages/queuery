@@ -64,6 +64,8 @@ class Query < ApplicationRecord
 
     Rails.logger.info "[Redshift Data API] describe statement #{data_api_id}"
     api_response = Aws::RedshiftDataAPIService::Client.new.describe_statement({id: data_api_id})
+    Rails.logger.info "[Redshift Data API] Describe Response: #{api_response}"
+
     QueryError.find_or_create_by(job_id: job_id, message: "#{api_response[:error]}") if api_response[:error]
     self.data_api_status = api_response.status
     save!
