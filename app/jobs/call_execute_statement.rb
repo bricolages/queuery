@@ -33,7 +33,8 @@ class CallExecuteStatement < ApplicationJob
       database: config[:database],
       db_user: db_user,
       sql: stmt,
-      statement_name: "queuery: #{unload_query.sanitized_note}"
+      statement_name: "queuery: #{unload_query.sanitized_note}",
+      with_event: true
     })
     logger.info "[Redshift Data API] Execute Response: #{api_response}"
     api_response
