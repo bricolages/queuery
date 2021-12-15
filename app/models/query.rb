@@ -1,3 +1,4 @@
+require 'timeout'
 class Query < ApplicationRecord
   belongs_to :client_account
   # FIXME: associated by job_id...
@@ -62,12 +63,19 @@ class Query < ApplicationRecord
   def status
     return data_api_status if ENDED_STATUS.include?(data_api_status)
 
-    Rails.logger.info "[Redshift Data API] describe statement #{data_api_id}"
-    api_response = Aws::RedshiftDataAPIService::Client.new.describe_statement({id: data_api_id})
-    Rails.logger.info "[Redshift Data API] Describe Response: #{api_response}"
+    begin
+      Timeout.timeout(10) do
+        Rails.logger.info "[Redshift Data API] describe statement #{data_api_id}"
+        api_response = Aws::RedshiftDataAPIService::Client.new.describe_statement({id: data_api_id})
+        Rails.logger.info "[Redshift Data API] Describe Response: #{api_response}"
+        QueryError.find_or_create_by(job_id: job_id, message: "#{api_response[:error]}") if api_response[:error]
+        self.data_api_status = api_response.status
+      end
+    rescue Timeout::Error
+      Rails.logger.info "[Redshift Data API] Timeout occurred, return alternative status"
+      self.data_api_status = 'STARTED'
+    end
 
-    QueryError.find_or_create_by(job_id: job_id, message: "#{api_response[:error]}") if api_response[:error]
-    self.data_api_status = api_response.status
     save!
     data_api_status
   end
