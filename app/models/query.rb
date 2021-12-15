@@ -1,3 +1,4 @@
+require 'json'
 require 'timeout'
 require 'aws-sdk-s3'
 
@@ -72,8 +73,8 @@ class Query < ApplicationRecord
 
     Rails.logger.info "[Redshift Data API] check status:#{data_api_id} to s3://#{bucket.name}/#{event_log_obj.key}"
     if event_log_obj.exists?
-      event_log = event_log_obj.get.body
-      state = event_log.detail.state
+      event_log = JSON.load(event_log_obj.get.body)
+      state = event_log['detail']['state']
     else
       state = 'STARTED'
     end
