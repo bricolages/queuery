@@ -27,6 +27,8 @@ class QueryResource
       when 'FAILED' then
         'failed'
       when 'ABORTED' then
+        # FIXME: queuery_client can handle only 'success' and 'failed' status (if 'canceled' go to endless loop)
+        # https://github.com/bricolages/queuery_client/blob/master/lib/queuery_client/client.rb
         'failed'
       else
         'unknown'
