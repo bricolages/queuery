@@ -1,10 +1,14 @@
 require 'timeout'
+require 'aws-sdk-s3'
+
 class Query < ApplicationRecord
   belongs_to :client_account
   # FIXME: associated by job_id...
   has_one :query_error, foreign_key: :job_id, primary_key: :job_id
 
-  ENDED_STATUS = ['FAILED', 'ABORTED', 'FINISHED']
+  SUCCESS_STATUS = ['FINISHED']
+  ERROR_STATUS = ['FAILED', 'ABORTED']
+  ENDED_STATUS = SUCCESS_STATUS + ERROR_STATUS
 
   def self.execute(unbound_select_stmt, values, unload_option, client_account)
     bound_select_stmt = bind_sql_parameters(unbound_select_stmt, values, client_account)
@@ -63,19 +67,25 @@ class Query < ApplicationRecord
   def status
     return data_api_status if ENDED_STATUS.include?(data_api_status)
 
-    begin
-      Timeout.timeout(10) do
-        Rails.logger.info "[Redshift Data API] describe statement #{data_api_id}"
-        api_response = Aws::RedshiftDataAPIService::Client.new.describe_statement({id: data_api_id})
-        Rails.logger.info "[Redshift Data API] Describe Response: #{api_response}"
-        QueryError.find_or_create_by(job_id: job_id, message: "#{api_response[:error]}") if api_response[:error]
-        self.data_api_status = api_response.status
-      end
-    rescue Timeout::Error
-      Rails.logger.info "[Redshift Data API] Timeout occurred, return alternative status"
-      self.data_api_status = 'STARTED'
+    bucket = self.query_execution.bundle.bucket
+    event_log_obj = bucket.object("status/#{data_api_id}.json")
+
+    Rails.logger.info "[Redshift Data API] check status:#{data_api_id} to s3://#{bucket.name}/#{event_log_obj.key}"
+    if event_log_obj.exists?
+      event_log = event_log_obj.get.body
+      state = event_log.detail.state
+    else
+      state = 'STARTED'
     end
 
+    if ERROR_STATUS.include?(state)
+      Rails.logger.info "[Redshift Data API] describe statement #{data_api_id}"
+      api_response = Aws::RedshiftDataAPIService::Client.new.describe_statement({id: data_api_id})
+      Rails.logger.info "[Redshift Data API] Describe Response: #{api_response}"
+      QueryError.find_or_create_by(job_id: job_id, message: "#{api_response[:error]}") if api_response[:error]
+    end
+
+    self.data_api_status = state
     save!
     data_api_status
   end
