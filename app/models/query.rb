@@ -68,7 +68,7 @@ class Query < ApplicationRecord
     return data_api_status if ENDED_STATUS.include?(data_api_status)
 
     bucket = self.query_execution.bundle.bucket
-    event_log_obj = bucket.object("status/#{data_api_id}.json")
+    event_log_obj = bucket.object("states/#{data_api_id}.json")
 
     Rails.logger.info "[Redshift Data API] check status:#{data_api_id} to s3://#{bucket.name}/#{event_log_obj.key}"
     if event_log_obj.exists?
