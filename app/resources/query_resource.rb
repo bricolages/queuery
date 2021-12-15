@@ -27,7 +27,7 @@ class QueryResource
       when 'FAILED' then
         'failed'
       when 'ABORTED' then
-        'canceled'
+        'failed'
       else
         'unknown'
       end
