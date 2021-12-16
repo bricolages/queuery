@@ -44,11 +44,9 @@ class Query < ApplicationRecord
   def execute(unload_option: {})
     note = "queried by #{client_account.name}"
     self.timestamp_prefix = generate_timestamp_prefix
-    self.job_id = generate_job_id # alternative bbq job_id
-
-    api_response =  CallExecuteStatement.perform_now(self, note, unload_option)
-
-    self.data_api_id = api_response.id
+    save!
+    query_job = EnqueueBbqJob.perform_later(self.id, note, timestamp_prefix, client_account, unload_option)
+    self.job_id = query_job.job_id
     save!
   end
 
@@ -66,6 +64,7 @@ class Query < ApplicationRecord
   end
 
   def status
+    return 'SUBMITTED' if data_api_id.nil?
     return data_api_status if TERNMINAL_STATUS.include?(data_api_status)
 
     bucket = self.query_execution.bundle.bucket
