@@ -15,6 +15,7 @@ gem 'puma', '~> 5.5'
 gem 'bcrypt', '~> 3.1.7'
 
 gem 'the_garage'
+gem 'barbeque_client', '>= 0.10.2'
 gem 'redshift_connector', '~> 8.0'
 gem 'revision_plate', require: 'revision_plate/rails'
 gem 'weak_parameters'
@@ -42,6 +43,7 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'sinatra', '~> 2.1.0'
+  gem 'thin' # for barbeque_client runner
   gem 'foreman'
 end
 
