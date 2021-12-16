@@ -4,7 +4,7 @@ class EnqueueBbqJob < ApplicationJob
   def perform(query_id, note, timestamp_prefix, client_account, option={})
     execute_export(
       db_user: client_account.redshift_user,
-      query_stmt: Query.find(query_id).select_stmt,
+      query: Query.find(query_id),
       option: option,
       note: note,
       job_id: job_id,
@@ -16,13 +16,13 @@ class EnqueueBbqJob < ApplicationJob
     raise err
   end
 
-  def execute_export(db_user:, query_stmt:, option:, note:, job_id:, timestamp_prefix:, logger:)
+  def execute_export(db_user:, query:, option:, note:, job_id:, timestamp_prefix:, logger:)
     execution = DataApiQueryExecution.new(job_id, timestamp_prefix)
 
     manifest = option[:enable_metadata] || false
-    unload_query = SafeUnloadQuery.wrap(query: query_stmt, manifest: manifest, bundle: execution.bundle, note: note)
+    unload_query = SafeUnloadQuery.wrap(query: query.select_stmt, manifest: manifest, bundle: execution.bundle, note: note)
     stmt = unload_query.to_sql
-    logger.info "[SQL/Redshift] /* #{unload_query.sanitized_note}*/ #{query_stmt}"
+    logger.info "[SQL/Redshift] /* #{unload_query.sanitized_note}*/ #{query.select_stmt}"
 
     config = RedshiftBase::connection_db_config.configuration_hash
     logger.info "[Redshift Data API] execute statement: #{job_id} by #{db_user}"
@@ -35,7 +35,8 @@ class EnqueueBbqJob < ApplicationJob
       with_event: true
     })
     logger.info "[Redshift Data API] Execute Response: #{api_response}"
-    api_response
+    query.data_api_id = api_response.id
+    query.save!
   end
 
   class SafeUnloadQuery < RedshiftConnector::UnloadQuery
