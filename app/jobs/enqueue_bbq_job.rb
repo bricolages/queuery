@@ -26,17 +26,34 @@ class EnqueueBbqJob < ApplicationJob
 
     config = RedshiftBase::connection_db_config.configuration_hash
     logger.info "[Redshift Data API] execute statement: #{job_id} by #{db_user}"
-    api_response = Aws::RedshiftDataAPIService::Client.new.execute_statement({
-      cluster_identifier: config[:cluster_identifier],
-      database: config[:database],
-      db_user: db_user,
-      sql: stmt,
-      statement_name: "queuery: #{unload_query.sanitized_note}",
-      with_event: true
-    })
+
+    api_response = with_retry do
+      Aws::RedshiftDataAPIService::Client.new.execute_statement({
+        cluster_identifier: config[:cluster_identifier],
+        database: config[:database],
+        db_user: db_user,
+        sql: stmt,
+        statement_name: "queuery: #{unload_query.sanitized_note}",
+        with_event: true
+      })
+    end
+
     logger.info "[Redshift Data API] Execute Response: #{api_response}"
     query.data_api_id = api_response.id
     query.save!
+  end
+
+  private def with_retry(max_retry: 5, max_backoff: 8)
+    count = 0
+    begin
+      count += 1
+      yield
+    rescue Seahorse::Client::NetworkingError, Aws::RedshiftDataAPIService::Errors::InternalFailure
+      raise if count > max_retry
+      sleep [2 ** (count - 1), max_backoff].min
+      logger.info "[Redshift Data API] Retry ExecuteStatement: #{count} time"
+      retry
+    end
   end
 
   class SafeUnloadQuery < RedshiftConnector::UnloadQuery
