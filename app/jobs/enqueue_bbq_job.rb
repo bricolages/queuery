@@ -27,8 +27,8 @@ class EnqueueBbqJob < ApplicationJob
     config = RedshiftBase::connection_db_config.configuration_hash
     logger.info "[Redshift Data API] execute statement: #{job_id} by #{db_user}"
 
-    with_retry do
-      api_response = Aws::RedshiftDataAPIService::Client.new.execute_statement({
+    api_response = with_retry do
+      Aws::RedshiftDataAPIService::Client.new.execute_statement({
         cluster_identifier: config[:cluster_identifier],
         database: config[:database],
         db_user: db_user,
