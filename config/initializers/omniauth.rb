@@ -1,4 +1,4 @@
-# Queuery uses static HTMLs, so CSRF token cannot be embeded to HTMLs.
+# Queuery uses static HTML files, so a CSRF token cannot be embedded in the HTML.
 OmniAuth.config.allowed_request_methods = [:get, :post]
 
 Rails.application.configure do
