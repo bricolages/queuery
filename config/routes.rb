@@ -13,5 +13,5 @@ Rails.application.routes.draw do
   end
 
   get '/hello/revision' => RevisionPlate::App.new
-  get '/auth/azure_oauth2/callback', to: 'v2/sessions#create'
+  post '/auth/azure_ad/callback', to: 'v2/sessions#create'
 end

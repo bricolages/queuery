@@ -23,7 +23,7 @@ export const LazyContent: LazyContentComponent = ({ content, children }) => {
   if (content === UNAUTHORIZED) {
     return (
       <Flex alignSelf="center" justifyContent="center" m={3}>
-        <AnchorButton href="/auth/azure_oauth2" intent={Intent.PRIMARY} className={Classes.LARGE}>
+        <AnchorButton href="/auth/azure_ad" intent={Intent.PRIMARY} className={Classes.LARGE}>
           Login
         </AnchorButton>
       </Flex>
