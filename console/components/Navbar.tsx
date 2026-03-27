@@ -1,9 +1,7 @@
 import React, { FC } from 'react';
-import { Button, Classes, Intent, NavbarGroup, Navbar } from '@blueprintjs/core';
+import { Button, Classes, Icon, Intent, NavbarGroup, Navbar } from '@blueprintjs/core';
 import { Link } from 'react-router-dom';
 import { Route, useRouteMatch } from 'react-router';
-import { IconNames } from '@blueprintjs/icons';
-import { iconClass } from '@blueprintjs/core/lib/esm/common/classes';
 
 const TopNav: FC = () => (
   <li>
@@ -60,10 +58,8 @@ const QNavbar: FC<NavbarProps> = ({ isNightMode, onNightModeChange }) => {
         </ul>
       </NavbarGroup>
       <NavbarGroup align="right">
-        <Link
-          className={[Classes.BUTTON, Classes.MINIMAL, iconClass(IconNames.APPLICATION)].join(' ')}
-          to="/console/clients/"
-        >
+        <Link className={[Classes.BUTTON, Classes.MINIMAL].join(' ')} to="/console/clients/">
+          <Icon icon="application" style={{ marginRight: '7px' }} />
           Client Accounts
         </Link>
         <span className={Classes.NAVBAR_DIVIDER} />

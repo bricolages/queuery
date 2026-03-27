@@ -24,7 +24,7 @@ const App: FC = () => {
   return (
     <Router>
       <QueryClientProvider client={queryClient}>
-        <div className={`app-root ${isNightMode ? 'bp3-dark' : ''}`}>
+        <div className={`app-root ${isNightMode ? 'bp4-dark' : ''}`}>
           <Navbar onNightModeChange={handleNightModeChange} isNightMode={isNightMode} />
           <Switch>
             <Route exact path="/console/" component={Dashboard} />

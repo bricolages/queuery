@@ -1,20 +1,14 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-const { AppContainer } = require("react-hot-loader");
-
 import * as React from 'react';
 import { render } from 'react-dom';
-
-const rootElem = document.getElementById('root');
-require('./index.css');
-
 import App from './App';
 
-function renderApp() {
-  const App = require('./App').default;
-  render(<App />, rootElem);
+const rootElem = document.getElementById('root');
+render(<App />, rootElem);
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+if ((import.meta as any).hot) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (import.meta as any).hot.accept('./App', (nextModule: any) => {
+    render(<nextModule.default />, rootElem);
+  });
 }
-
-renderApp();
-
-(module as any).hot.accept(renderApp);

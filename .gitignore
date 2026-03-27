@@ -29,3 +29,5 @@
 .DS_Store
 .env
 .env.docker
+/.yarn
+/.parcel-cache

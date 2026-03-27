@@ -1,8 +1,8 @@
-@import "normalize.css";
-@import "@blueprintjs/icons/lib/css/blueprint-icons.css";
-@import "@blueprintjs/core/lib/css/blueprint.css";
+@import "npm:normalize.css";
+@import "npm:@blueprintjs/icons/lib/css/blueprint-icons.css";
+@import "npm:@blueprintjs/core/lib/css/blueprint.css";
 
-table.bp3-html-table th, table.bp3-html-table td {
+table.bp4-html-table th, table.bp4-html-table td {
   vertical-align: middle;
 }
 
@@ -16,6 +16,6 @@ table.bp3-html-table th, table.bp3-html-table td {
   background-color: #f5f8fa;
 }
 
-.app-root.bp3-dark {
+.app-root.bp4-dark {
   background-color: #293742;
 }

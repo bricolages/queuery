@@ -22,7 +22,7 @@ const RedshiftAccess = (props: Props) => {
               {redshiftUser}
             </td>
             <td>
-              <Button className="bp3" style={{ width: '100%', marginLeft: 'auto' }} intent={Intent.PRIMARY} text="Edit" onClick={props.onClick} icon="edit" />
+              <Button style={{ width: '100%', marginLeft: 'auto' }} intent={Intent.PRIMARY} text="Edit" onClick={props.onClick} icon="edit" />
             </td>
           </tr>
         </tbody>

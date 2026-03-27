@@ -54,11 +54,11 @@ export default class NewClientDialog extends React.Component<{
     return (
       <Dialog isOpen={isOpen} onClose={onClose} icon="tick" title="New Client">
         <div className={Classes.DIALOG_BODY}>
-          <label className="bp3-label">
+          <label className="bp4-label">
             <b>Client Name</b>
             <input
               type="text"
-              className={`bp3-input bp3-fill ${this.isNameValid() ? '' : 'bp3-intent-danger'}`}
+              className={`bp4-input bp4-fill ${this.isNameValid() ? '' : 'bp4-intent-danger'}`}
               placeholder="/^[a-z_][a-z_0-9-]*$/"
               readOnly={false}
               value={name}
@@ -66,11 +66,11 @@ export default class NewClientDialog extends React.Component<{
             />
           </label>
 
-          <label className="bp3-label">
+          <label className="bp4-label">
             <b>Redshift User Name</b>
             <input
               type="text"
-              className={`bp3-input bp3-fill ${postError ? 'bp3-intent-danger' : ''}`}
+              className={`bp4-input bp4-fill ${postError ? 'bp4-intent-danger' : ''}`}
               placeholder="user name"
               readOnly={false}
               value={redshiftUser}
@@ -78,11 +78,11 @@ export default class NewClientDialog extends React.Component<{
             />
           </label>
 
-          <label className="bp3-label">
+          <label className="bp4-label">
             <b>Redshift Password</b>
             <input
               type="password"
-              className={`bp3-input bp3-fill ${postError ? 'bp3-intent-danger' : ''}`}
+              className={`bp4-input bp4-fill ${postError ? 'bp4-intent-danger' : ''}`}
               placeholder="password"
               readOnly={false}
               value={redshiftPassword}
