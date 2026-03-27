@@ -18,7 +18,7 @@ gem 'omniauth_openid_connect'
 gem 'expeditor'
 gem 'aws-sdk-redshift'
 gem 'aws-sdk-redshiftdataapiservice'
-gem 'silencer'
+gem 'silencer', require: 'silencer/rails/logger'
 
 group :development, :test do
   gem 'test-unit'
