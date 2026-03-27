@@ -16,7 +16,7 @@ To run these, work following steps.
 
 1. setup PostgreSQL DB to use `createdb` and `createuser` manually to create `queuery_development` user & DB
 2. execute `bundle exec bin/setup`
-3. set env variables AAD_CLIENT_ID, AAD_CLIENT_SECRET, AAD_TENANT_ID
+3. set env variables AAD_CLIENT_ID, AAD_TENANT_ID, AAD_REDIRECT_URI
 4. execute `foreman start` then open `http://localhost:3000/console/` in your browser.
 
 (If you create client account at local environment, you must have access to Redshift)
