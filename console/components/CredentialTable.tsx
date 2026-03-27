@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { Button, Menu, MenuItem, Tag, Intent, Popover, Position, HTMLTable } from '@blueprintjs/core';
+import { Button, Menu, MenuItem, Tag, Intent, Popover, HTMLTable } from '@blueprintjs/core';
 
 import { ClientCredential } from '../resources';
 
@@ -29,7 +29,7 @@ const ClientCredentialTable = memo<Props>(function ClientCredentialTable({
           <th style={{ width: '100%' }}>token</th>
           <th style={{ width: '0.1%' }}>status</th>
           <th style={{ width: '0.1%', textAlign: 'right' }}>
-            <Button className="bp3-minimal" onClick={() => onNewCredentialClick()} icon="plus" />
+            <Button minimal onClick={() => onNewCredentialClick()} icon="plus" />
           </th>
         </tr>
       </thead>
@@ -42,8 +42,8 @@ const ClientCredentialTable = memo<Props>(function ClientCredentialTable({
               {!disabled && <Tag intent={Intent.PRIMARY}>enabled</Tag>}
             </td>
             <td>
-              <Popover position={Position.BOTTOM_RIGHT} content={dropdownMenu(token, disabled)}>
-                <Button className="bp3-minimal" icon="more" />
+              <Popover placement="bottom-end" content={dropdownMenu(token, disabled)}>
+                <Button minimal icon="more" />
               </Popover>
             </td>
           </tr>

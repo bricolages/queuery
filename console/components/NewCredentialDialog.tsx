@@ -64,11 +64,11 @@ const NewCredentialDialog: FC<Props> = (props) => {
             <b>Redshift User Name: </b>
           </p>
           <p>{clientAccount.redshift_user}</p>
-          <label className="bp3-label">
+          <label className="bp4-label">
             <b>Redshift Password</b>
             <input
               type="password"
-              className={`bp3-input bp3-fill ${postError ? 'bp3-intent-danger' : ''}`}
+              className={`bp4-input bp4-fill ${postError ? 'bp4-intent-danger' : ''}`}
               placeholder="password"
               readOnly={false}
               value={redshiftPassword}

@@ -51,7 +51,6 @@ const ClientShow: FC = () => {
     <Flex flexDirection="column" width={[1, 1, 1, 960]} py={2} mx={'auto'}>
       <h1>{name}</h1>
       <Button
-        className="bp3"
         style={{ width: '15%', marginLeft: 'auto' }}
         intent={Intent.DANGER}
         text="Delete Client"

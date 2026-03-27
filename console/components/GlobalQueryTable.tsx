@@ -1,12 +1,10 @@
 import React, { memo } from 'react';
-import { Classes, HTMLTable } from '@blueprintjs/core';
+import { Classes, HTMLTable, Icon } from '@blueprintjs/core';
 
 import { Query } from '../resources';
 
 import StatusBadge from './StatusBadge';
 import { Link } from 'react-router-dom';
-import { iconClass } from '@blueprintjs/core/lib/esm/common/classes';
-import { IconNames } from '@blueprintjs/icons';
 
 function fmtDate(strDate: string) {
   const dt = new Date(strDate);
@@ -41,10 +39,9 @@ const GlobalQueryTable = memo<Props>(function GlobalQueryTable({ queries }) {
             </td>
             <td>{fmtDate(query.created_at)}</td>
             <td className="text-right">
-              <Link
-                to={`/console/clients/${query.client_account_name}/queries/${query.id}`}
-                className={[Classes.BUTTON, Classes.MINIMAL, iconClass(IconNames.CHEVRON_RIGHT)].join(' ')}
-              />
+              <Link to={`/console/clients/${query.client_account_name}/queries/${query.id}`} className={[Classes.BUTTON, Classes.MINIMAL].join(' ')}>
+                <Icon icon="chevron-right" />
+              </Link>
             </td>
           </tr>
         ))}

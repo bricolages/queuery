@@ -55,11 +55,11 @@ export default class EditRedshiftUserDialog extends React.Component<{
           </p>
           <p>{name}</p>
 
-          <label className="bp3-label">
+          <label className="bp4-label">
             <b>Redshift User Name</b>
             <input
               type="text"
-              className={`bp3-input bp3-fill ${postError ? 'bp3-intent-danger' : ''}`}
+              className={`bp4-input bp4-fill ${postError ? 'bp4-intent-danger' : ''}`}
               placeholder="user name"
               readOnly={false}
               value={redshiftUser}
@@ -67,11 +67,11 @@ export default class EditRedshiftUserDialog extends React.Component<{
             />
           </label>
 
-          <label className="bp3-label">
+          <label className="bp4-label">
             <b>Redshift Password</b>
             <input
               type="password"
-              className={`bp3-input bp3-fill ${postError ? 'bp3-intent-danger' : ''}`}
+              className={`bp4-input bp4-fill ${postError ? 'bp4-intent-danger' : ''}`}
               placeholder="password"
               readOnly={false}
               value={redshiftPassword}
