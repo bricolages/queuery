@@ -7,7 +7,7 @@ class ApplicationController < ActionController::API
   def authenticate_client
     @current_client_account = authenticate_or_request_with_http_basic do |token, token_secret|
       ClientAccount.authenticate(token, token_secret)&.tap do |client_account|
-        Raven.user_context(token: token, name: client_account.name)
+        Sentry.set_user(token: token, name: client_account.name)
       end
     end
   end

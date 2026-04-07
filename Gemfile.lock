@@ -333,8 +333,13 @@ GEM
       rack
     ruby2_keywords (0.0.5)
     securerandom (0.4.1)
-    sentry-raven (3.1.2)
-      faraday (>= 1.0)
+    sentry-rails (6.5.0)
+      railties (>= 5.2.0)
+      sentry-ruby (~> 6.5.0)
+    sentry-ruby (6.5.0)
+      bigdecimal
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+      logger
     silencer (2.0.0)
     sinatra (3.2.0)
       mustermann (~> 3.0)
@@ -407,7 +412,8 @@ DEPENDENCIES
   rails (~> 7.0.10)
   redshift_connector!
   revision_plate
-  sentry-raven
+  sentry-rails
+  sentry-ruby
   silencer
   sinatra
   test-unit
