@@ -83,7 +83,7 @@ production:
   url: <%= ENV['DATABASE_URL'] %>
 
 default_redshift: &default_redshift
-  adapter: redshift
+  adapter: postgresql
   host: "<%= ENV['REDSHIFT_DEFAULT_HOST'] %>"
   port: 5439
   database: "<%= ENV['REDSHIFT_DEFAULT_DATABASE'] %>"
