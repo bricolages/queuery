@@ -36,6 +36,10 @@ module Queuery
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
     config.middleware.use ActionDispatch::Cookies
-    config.middleware.use ActionDispatch::Session::CookieStore
+    # OmniAuth uses session to store the state parameter during OAuth flow.
+    # Azure AD returns the state via form_post (cross-site POST), which requires
+    # SameSite=None on the session cookie. SameSite=None in turn requires Secure flag.
+    config.middleware.use ActionDispatch::Session::CookieStore, key: '_queuery_session', secure: true
+    config.action_dispatch.cookies_same_site_protection = :none
   end
 end
