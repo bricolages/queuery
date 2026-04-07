@@ -23,7 +23,5 @@ class V2Controller < ApplicationController
       password:,
     )
     conn.close
-  rescue PG::ConnectionBad => err
-    raise err
   end
 end
