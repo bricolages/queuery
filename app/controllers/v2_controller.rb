@@ -13,15 +13,15 @@ class V2Controller < ApplicationController
     end
   end
 
-  def check_redshift_user(username, password)
-    connection_config = RedshiftBase::connection_config.dup
-    connection_config[:username] = username
-    connection_config[:password] = password
-
-    connection_pool = RedshiftBase.generate_temporary_ds.establish_connection(connection_config)
-    res = connection_pool.connection.execute('select 1')
-    connection_pool.disconnect!
-  rescue PG::ConnectionBad => err
-    raise err
+  def check_redshift_user(user, password)
+    config = RedshiftBase.connection_db_config.configuration_hash
+    conn = PG::Connection.new(
+      host: config[:host],
+      port: config[:port],
+      dbname: config[:database],
+      user:,
+      password:,
+    )
+    conn.close
   end
 end
